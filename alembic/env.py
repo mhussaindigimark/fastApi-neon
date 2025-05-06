@@ -4,14 +4,48 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from dotenv import load_dotenv
 
+
 from alembic import context
 
 # Load env vars from .env
 load_dotenv()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+
+from app.models.user import User
+from app.models.roles import Roles
+from app.models.user_permission_roles import UserPermissionRoles
+from app.models.bulk_emails_stats import BulkEmailsStats
+from app.models.test_email import TestEmail
+from app.models.credits import Credits
+from app.models.subscriptions_stripe import SubscriptionsStripe
+from app.models.invoices import Invoices
+from app.models.credit_history import CreditHistory
+from app.models.pricing_plans import PricingPlans
+from app.models.credit_usage import CreditUsage
+from app.database.connection import Base
+
+
 config = context.config
 
+# this is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = context.config
+
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
+fileConfig(config.config_file_name)
+
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+target_metadata = Base.metadata #metadata from sqlachemy
+
+# other values from the config, defined by the needs of env.py,
+# can be acquired:
+# my_important_option = config.get_main_option("my_important_option")
+# ... etc.
 # Set the DB URL from .env
 config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
 # Interpret the config file for Python logging.
@@ -81,9 +115,9 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-
-
-from app.models.base import BaseModel
+    
+    
+    
 from app.utils.config import settings
 from app.database.connection import Base
 
